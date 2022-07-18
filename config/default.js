@@ -6,7 +6,7 @@ module.exports = {
       HOST: "127.0.0.1",
       USERNAME: "root",
       PASSWORD: null,
-      DATABASE: "crpyto_exchange_rate",
+      DATABASE: "crypto_exchange_rate",
     },
   },
   DIR: {
