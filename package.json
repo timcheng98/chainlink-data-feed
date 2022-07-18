@@ -1,0 +1,43 @@
+{
+  "name": "crypto-exchange-rate-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "export NODE_ENV=development && jest",
+    "init": "npm ci",
+    "dev": "backpack",
+    "build": "backpack build",
+    "start": "node build/main.js",
+    "migrate:up": "npx sequelize-cli db:migrate",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "db:seed:all": "npx sequelize-cli db:seed:all",
+    "db:seed:undo": "npx sequelize-cli db:seed:undo"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-rds": "^3.131.0",
+    "axios": "^0.27.2",
+    "backpack-core": "^0.8.4",
+    "config": "^3.3.7",
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.1",
+    "ethers": "^5.6.9",
+    "express": "^4.18.1",
+    "express-mysql-session": "^2.1.8",
+    "express-session": "^1.17.3",
+    "helmet": "^5.1.0",
+    "jest-html-reporter": "^3.6.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "node-schedule": "^2.1.0",
+    "sequelize": "^6.21.3"
+  },
+  "devDependencies": {
+    "jest": "^28.1.3",
+    "sequelize-cli": "^6.4.1"
+  }
+}

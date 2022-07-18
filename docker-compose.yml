@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  crypto-exchange-app:
+    image: public.ecr.aws/x9c2s7b9/timcheng:latest
+    restart: always
+    ports:
+      - 3000:3000
+  # phpmyadmin:
+  #   image: phpmyadmin:5.2.0
+  #   restart: always
+  #   ports:
+  #     - 8081:80
+  #   environment:
+  #     PMA_ARBITRARY: 1
+  #     PMA_HOST: projects.ce4hnsvrohtu.ap-east-1.rds.amazonaws.com
+  #     PMA_PORT: 3306
