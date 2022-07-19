@@ -20,7 +20,7 @@ describe("Model", () => {
         raw: true,
       });
 
-      expect(data.address).toBe("0xf4030086522a5beea4988f8ca5b36dbc97bee88c");
+      expect(data.address).toBe("0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c");
     });
     test("get ETH/USD address", async () => {
       const data = await sequelize.models.data_feed.findOne({
@@ -33,7 +33,7 @@ describe("Model", () => {
         raw: true,
       });
 
-      expect(data.address).toBe("0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419");
+      expect(data.address).toBe("0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419");
     });
     test("get MATIC/ETH address", async () => {
       const data = await sequelize.models.data_feed.findOne({
@@ -112,22 +112,6 @@ describe("API", () => {
       expect(resp.data.status).toBe(1);
     });
 
-    test("get DAI/ETH", async () => {
-      const resp = await axios.get(
-        `http://localhost:3000/api/exchange_rate/DAI/ETH`
-      );
-      console.log(resp.data);
-      expect(resp.data.status).toBe(1);
-    });
-
-    test("get MATIC/USD", async () => {
-      const resp = await axios.get(
-        `http://localhost:3000/api/exchange_rate/MATIC/USD`
-      );
-      console.log(resp.data);
-      expect(resp.data.status).toBe(1);
-    });
-
     test("Invalid pair MATIC/ETH", async () => {
       const resp = await axios.get(
         `http://localhost:3000/api/exchange_rate/MATIC/ETH`
@@ -139,35 +123,39 @@ describe("API", () => {
 
   describe("API /api/exchange_rate/:from/:to/:given_time", () => {
     test("get BTC/USD", async () => {
-      const now = moment().unix();
+      const given_time = moment().startOf('d').unix();
       const resp = await axios.get(
-        `http://localhost:3000/api/exchange_rate/BTC/USD/${now}`
+        `http://localhost:3000/api/exchange_rate/BTC/USD/${given_time}`
       );
       console.log(resp.data);
       expect(resp.data.status).toBe(1);
     });
 
-    test("get DAI/ETH", async () => {
-      const now = moment().unix();
-      const resp = await axios.get(
-        `http://localhost:3000/api/exchange_rate/DAI/ETH/${now}`
-      );
-      console.log(resp.data);
-      expect(resp.data.status).toBe(1);
-    });
-
-    test("get MATIC/USD", async () => {
-      const now = moment().unix();
-      const resp = await axios.get(
-        `http://localhost:3000/api/exchange_rate/MATIC/USD/${now}`
-      );
-      console.log(resp.data);
-      expect(resp.data.status).toBe(1);
-    });
     test("Invalid pair MATIC/ETH", async () => {
-      const now = moment().unix();
+      const given_time = moment().startOf('d').unix();
       const resp = await axios.get(
-        `http://localhost:3000/api/exchange_rate/MATIC/ETH/${now}`
+        `http://localhost:3000/api/exchange_rate/MATIC/ETH/${given_time}`
+      );
+      console.log(resp.data);
+      expect(resp.data.status).toBe(-1);
+    });
+  });
+
+  describe("API /api/exchange_rate/:from/:to/:start/:end", () => {
+    test("get BTC/USD", async () => {
+      const start = moment().startOf('d').unix();
+      const end = moment().unix();
+      const resp = await axios.get(
+        `http://localhost:3000/api/exchange_rate/BTC/USD/${start}/${end}`);
+      console.log(resp.data);
+      expect(resp.data.status).toBe(1);
+    });
+
+    test("Invalid pair MATIC/ETH", async () => {
+      const start = moment().startOf('d').unix();
+      const end = moment().unix();
+      const resp = await axios.get(
+        `http://localhost:3000/api/exchange_rate/MATIC/ETH/${start}/${end}`
       );
       console.log(resp.data);
       expect(resp.data.status).toBe(-1);

@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "crypto-exchange-sysadmin",
-    "password": "!g7rwyjmtfe3yy]G",
-    "database": "crypto_exchange_rate",
-    "host": "projects.ce4hnsvrohtu.ap-east-1.rds.amazonaws.com",
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {

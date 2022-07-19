@@ -60,12 +60,6 @@ const aggregatorV3InterfaceABI = [
   },
 ];
 
-// (async () => {
-//   console.log('cp001')
-//   provider.getResolver("aave-eth.data.eth");
-//   console.log('cp001', await provider.resolveName("aave-eth.data.eth"))
-// })();
-
 exports.getDataFeed = async (from, to, blockchain) => {
   let dataFeed = await sequelize.models.data_feed.findOne({
     where: {
@@ -145,7 +139,7 @@ exports.getTargetPriceFeed = async ({
   );
   const decimals = await priceFeed.decimals();
 
-  let roundData;
+
   let recentRoundData;
   if (round_id) {
     recentRoundData = await priceFeed.getRoundData(
@@ -156,7 +150,12 @@ exports.getTargetPriceFeed = async ({
   }
 
   const recentRoundTime = recentRoundData.startedAt.toNumber();
-  roundData = recentRoundData;
+
+  let result = {
+    roundId: recentRoundData.roundId,
+    timestamp: recentRoundTime,
+    answer: ethers.utils.formatUnits(recentRoundData.answer, decimals)
+  };
   if (given_time < recentRoundTime) {
     console.log("Start Searching...");
     targets = await this.getPrevPriceFeedRecursive(
@@ -168,9 +167,9 @@ exports.getTargetPriceFeed = async ({
         prev_round_id: recentRoundData.roundId.sub(1),
         given_time,
       },
-      (_roundData) => {
-        console.log("Search Finished >> ", _roundData);
-        roundData = _roundData;
+      (_result) => {
+        result = _result
+        console.log("Search Finished >> ", result);
       }
     );
   }
@@ -178,9 +177,9 @@ exports.getTargetPriceFeed = async ({
   const dataObj = {
     from,
     to,
-    timestamp: moment.unix(roundData.timestamp).toISOString(),
-    rate: roundData.answer,
-    ...parseRoundId(roundData.roundId),
+    timestamp: moment.unix(result.timestamp).toISOString(),
+    rate: result.answer,
+    ...parseRoundId(result.roundId),
   };
 
   await sequelize.models.exchange_rate.findOrCreate({
@@ -189,12 +188,12 @@ exports.getTargetPriceFeed = async ({
   });
 
   return {
-    rate: roundData.answer,
-    timestamp: moment.unix(roundData.timestamp).toISOString(),
+    rate: result.answer,
+    timestamp: moment.unix(result.timestamp).toISOString(),
   };
 };
 
-exports.getPrevPriceFeedRecursive = async (_data, callback = () => {}) => {
+exports.getPrevPriceFeedRecursive = async (_data, callback = () => { }) => {
   const { priceFeed, from, to, prev_round_id, given_time, decimals } = _data;
 
   const cacheData = await sequelize.models.exchange_rate.findOne({
@@ -236,7 +235,7 @@ exports.getPrevPriceFeedRecursive = async (_data, callback = () => {}) => {
         from,
         to,
         timestamp: moment.unix(_prevRoundTime).toISOString(),
-        rate: _preAnswer,
+        rate: _prevAnswer,
         ...parseRoundId(_prevRoundId),
       });
     }
