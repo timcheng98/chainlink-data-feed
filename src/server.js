@@ -66,6 +66,12 @@ exports.start = () => {
     );
   }
 
+  app.get("/", (req, res) => {
+    return res.json({
+      version: "1.0.0",
+      tx: moment().unix(),
+    });
+  });
   app.get("/version", (req, res) => {
     return res.json({
       version: "1.0.0",
