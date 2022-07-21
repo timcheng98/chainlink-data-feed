@@ -76,7 +76,7 @@ const getExchangeRateByTimeRange = async (req, res) => {
       status: 1,
       data: {
         rate: data.avg_rate,
-        pair: `${data.from}/${data.to}`,
+        pair: `${from}/${to}`,
         start_timestamp: moment.unix(start_time).toISOString(),
         end_timestamp: moment.unix(end_time).toISOString(),
       },
